@@ -5,11 +5,11 @@ output:
     keep_md: true
 ---
 
-##Introduction
+# Introduction
 
 This report addresses a set of requirement included herein: the enumered section of this report corresponds to the "review criteria". All of the R code needed to reproduce the results (numbers, plots, etc.) are included in this report.
 
-0. Load libraries
+**Load libraries**
 ```{r}
 #load all required libraries
 library(lattice)
@@ -30,7 +30,7 @@ activity$date <- as.Date(activity$date, format = "%Y-%m-%d")
 **2. Histogram of the total number of steps taken each day**
 ```{r, echo=TRUE}
 #calculate total number of steps taken per day
-TotalStepsPerDay1 <- activity %>% select(date, steps) %>% group_by(date) %>% summarise_each(funs(sum(., na.rm = TRUE)))
+TotalStepsPerDay1 <- activity %>% select(date, steps) %>% group_by(date) %>% summarise_each(funs(sum))
 
 #generate the histogram
 hist(TotalStepsPerDay1$steps, breaks = 10, xlab = "Interval", main = "Total number of steps")
@@ -65,8 +65,9 @@ AvgStepsByInterval[AvgStepsByInterval$steps==max(AvgStepsByInterval$steps),]
 sum(is.na(activity$steps)==TRUE) #total number of missing values
 ```
 
+Replace missing value with the average of a given interval:
 ```{r, echo=TRUE}
-activity[is.na(activity)] <- 0 #simply replace missing values with 0
+activity$steps[is.na(activity$steps)] <- AvgStepsByInterval$steps 
 ```
 
 **7. Histogram of the total number of steps taken each day after missing values are inputted**

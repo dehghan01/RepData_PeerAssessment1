@@ -5,11 +5,11 @@ output:
     keep_md: true
 ---
 
-##Introduction
+# Introduction
 
 This report addresses a set of requirement included herein: the enumered section of this report corresponds to the "review criteria". All of the R code needed to reproduce the results (numbers, plots, etc.) are included in this report.
 
-0. Load libraries
+**Load libraries**
 
 ```r
 #load all required libraries
@@ -33,7 +33,7 @@ activity$date <- as.Date(activity$date, format = "%Y-%m-%d")
 
 ```r
 #calculate total number of steps taken per day
-TotalStepsPerDay1 <- activity %>% select(date, steps) %>% group_by(date) %>% summarise_each(funs(sum(., na.rm = TRUE)))
+TotalStepsPerDay1 <- activity %>% select(date, steps) %>% group_by(date) %>% summarise_each(funs(sum))
 
 #generate the histogram
 hist(TotalStepsPerDay1$steps, breaks = 10, xlab = "Interval", main = "Total number of steps")
@@ -47,8 +47,8 @@ hist(TotalStepsPerDay1$steps, breaks = 10, xlab = "Interval", main = "Total numb
 meanPerDay1 <- mean(TotalStepsPerDay1$steps, na.rm = TRUE)
 medianPerDay1 <- median(TotalStepsPerDay1$steps, na.rm = TRUE)
 ```
-* Mean: 9354.2295082
-* Median: 10395
+* Mean: 1.0766189 &times; 10<sup>4</sup>
+* Median: 10765
 
 ## What is the average daily activity pattern?
 **4. Time series plot of the average number of steps taken**
@@ -88,9 +88,10 @@ sum(is.na(activity$steps)==TRUE) #total number of missing values
 ## [1] 2304
 ```
 
+Replace missing value with the average of a given interval:
 
 ```r
-activity[is.na(activity)] <- 0 #simply replace missing values with 0
+activity$steps[is.na(activity$steps)] <- AvgStepsByInterval$steps 
 ```
 
 **7. Histogram of the total number of steps taken each day after missing values are inputted**
@@ -112,8 +113,8 @@ In addition, subsequent to inputting the missing value we can compare the mean a
 meanPerDay2 <- mean(TotalStepsPerDay2$steps, na.rm = TRUE)
 medianPerDay2 <- median(TotalStepsPerDay2$steps, na.rm = TRUE)
 ```
-* Mean: 9354.2295082
-* Median: 1.0395 &times; 10<sup>4</sup>
+* Mean: 1.0766189 &times; 10<sup>4</sup>
+* Median: 1.0766189 &times; 10<sup>4</sup>
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
